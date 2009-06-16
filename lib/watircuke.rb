@@ -3,6 +3,9 @@ require 'spec'
 #require File.join(File.dirname(__FILE__), '..', 'features', 'support', 'env')
 # Dir[File.join(File.dirname(__FILE__), '..', 'features', 'step_definitions', '*rb')].each { |file| require file }
 
+#
+# Environment
+#
 if ENV['FIREWATIR']
   require 'firewatir'
   Browser = FireWatir::Firefox
@@ -24,17 +27,16 @@ else
   end
 end
 
-# "before all"
-#browser =
-
+#
+# Cucumber
+#
 Before do
   @browser = Browser.new
 end
 
-When /^I press "([^\"]*)"$/ do |b|
-  @browser.button(:value, b).click
-end
-
+#
+# Browsing
+#
 When /^I follow "([^\"]*)"$/ do |l|
   @browser.link(:text, l).click
 end
@@ -47,19 +49,23 @@ Given /^I am on (.+)$/ do |page_name|
   @browser.goto(path_to(page_name))
 end
 
+# Then /^I should be on (.+)$/ do |page_name|
+#   URI.parse(current_url).path.should == path_to(page_name)
+# end
+
 #
 # Should see
 #
 Then /^I should see "([^\"]*)"$/ do |text|
-  @browser.contains_text(text).should be_true
+  @browser.should contains_text(text)
 end
 
 Then /^I should not see "([^\"]*)"$/ do |text|
-  @browser.contains_text(text).should be_false
+  @browser.should_not contains_text(text)
 end
 
 Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
-  res = response.body
+  res = @browser.body
   (count.to_i - 1).times { res.sub!(/#{text}/, "")}
   res.should contain(text)
   res.sub(/#{text}/, "").should_not contain(text)
@@ -84,32 +90,41 @@ end
 #
 # Forms
 #
+When /^I press "([^\"]*)"$/ do |b|
+  @browser.button(:value, b).click
+end
+
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
   @browser.text_field(:name, field).set(value)
 end
 
-# When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, field|
-#   select(value, :from => field)
-# end
-
-# Given /I click the "(.*)" checkbox/ do |id|
-#   @browser.checkbox(:id, id).click
-# end
-
-Given /I click the "(.*)" radio button/ do |id|
-  @browser.radio(:id, id).click
-end
-
-Given /I select "(.*)" from the select list "(.*)"/ do |value, id|
+When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, id|
   @browser.select_list(:id, id).select(value)
 end
 
-Given /From the "(.*)" link I fire the "(.*)" event/  do |text, event|
-  @browser.link(:text , text).fire_event(event)
+When /^I choose "([^\"]*)"$/ do |id|
+  @browser.radio(:id, id).click
 end
+
+When /^I check "([^\"]*)"$/ do |id|
+  @browser.checkbox(:id, id).click
+end
+
+# When /^I uncheck "([^\"]*)"$/ do |field|
+#   uncheck(field)
+# end
+# Given /I click the "(.*)" checkbox/ do |id|
+# end
 
 Given /I wait "(.*)" seconds/ do |time|
   sleep time.to_i
+end
+
+#
+# Javascript
+#
+Given /From the "(.*)" link I fire the "(.*)" event/  do |text, event|
+  @browser.link(:text , text).fire_event(event)
 end
 
 Given /I click the "(.*)" span/  do |text|

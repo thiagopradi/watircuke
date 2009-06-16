@@ -7,7 +7,7 @@ if ENV['FIREWATIR']
   Browser = FireWatir::Firefox
 else
   case RUBY_PLATFORM
-  when /darwin/
+  when /darwin|i686-linux/
     require 'firewatir'
     Browser = FireWatir::Firefox
     # require 'safariwatir'    

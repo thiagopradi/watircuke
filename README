@@ -27,6 +27,10 @@ cucumber.yml
 support/watir.rb
 
     require 'watircuke'
+    Before do
+      @environment = "http://localhost:3000/
+      sleep 1
+    end
     # optional
     # at_exit do
     #   @browser.close

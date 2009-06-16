@@ -1,7 +1,7 @@
 require "cucumber"
+require 'spec'
 #require File.join(File.dirname(__FILE__), '..', 'features', 'support', 'env')
 # Dir[File.join(File.dirname(__FILE__), '..', 'features', 'step_definitions', '*rb')].each { |file| require file }
-require 'spec'
 
 if ENV['FIREWATIR']
   require 'firewatir'
@@ -24,16 +24,12 @@ else
   end
 end
 
+# "before all"
+#browser =
 
- # "before all"
- browser = Browser.new
-
- Before do
-   @browser = browser
-   @environment = "http://github.com/"
-   sleep 3
- end
-
+Before do
+  @browser = Browser.new
+end
 
 When /^I press "([^\"]*)"$/ do |b|
   @browser.button(:value, b).click
@@ -43,7 +39,7 @@ When /^I follow "([^\"]*)"$/ do |l|
   @browser.link(:text, l).click
 end
 
-When /^I (visit|go to) "(.+)"$/ do |text|
+When /^I (visit|go to) the (.+)$/ do |_, text|
   @browser.goto(@environment + text)
 end
 
@@ -62,10 +58,6 @@ Then /^I should not see "([^\"]*)"$/ do |text|
   @browser.contains_text(text).should be_false
 end
 
-Then /^I should not see "([^\"]*)"$/ do |text|
-  response.should_not contain(text)
-end
-
 Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
   res = response.body
   (count.to_i - 1).times { res.sub!(/#{text}/, "")}
@@ -74,19 +66,19 @@ Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
 end
 
 Given /I verify the page contains a div class "(.*)"/ do |byclass|
-  assert(@browser.div(:class, byclass).exists?)
+  @browser.div(:class, byclass).exists?.should be_true
 end
 
 Given /I verify the page contains a div id "(.*)"/ do |id|
-  assert(@browser.div(:id, id).exists?)
+  @browser.div(:id, id).exists?.should be_true
 end
 
 Given /I verify the page contains a link class "(.*)"/ do |byclass|
-  assert(@browser.link(:class, byclass).exists?)
+  @browser.link(:class, byclass).exists?.should be_true
 end
 
 Given /I verify the page contains the image "(.*)"/ do |image|
-  assert(@browser.image(:src, image).exists?)
+  @browser.image(:src, image).exists?.should be_true
 end
 
 #

@@ -10,7 +10,7 @@ else
   when /darwin|i686-linux/
     require 'firewatir'
     Browser = FireWatir::Firefox
-    # require 'safariwatir'    
+    # require 'safariwatir'
     # Browser = Watir::Safari
   when /win32|mingw/
     require 'watir'
@@ -22,7 +22,7 @@ else
     raise "This platform is not supported (#{PLATFORM})"
   end
 end
- 
+
 
  # "before all"
  browser = Browser.new

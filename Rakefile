@@ -8,7 +8,7 @@ begin
     gem.summary = "Watir steps for cucumber"
     gem.email = "x@nofxx.com"
     gem.homepage = "http://github.com/nofxx/watircuke"
-    gem.authors = ["Marcos Piccinini"]
+    gem.authors = ["Rich Downie", "Marcos Piccinini"]
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end
 

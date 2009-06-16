@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Marcos Piccinini"]
+  s.authors = ["Rich Downie", "Marcos Piccinini"]
   s.date = %q{2009-06-16}
   s.email = %q{x@nofxx.com}
   s.extra_rdoc_files = [
@@ -34,7 +34,8 @@ Gem::Specification.new do |s|
      "lib/watircuke.rb",
      "lib/webratcuke.rb",
      "spec/spec_helper.rb",
-     "spec/watircuke_spec.rb"
+     "spec/watircuke_spec.rb",
+     "watircuke.gemspec"
   ]
   s.homepage = %q{http://github.com/nofxx/watircuke}
   s.rdoc_options = ["--charset=UTF-8"]

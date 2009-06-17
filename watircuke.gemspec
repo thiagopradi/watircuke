@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{watircuke}
-  s.version = "0.2.3"
+  s.version = "0.3.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rich Downie", "Marcos Piccinini"]
-  s.date = %q{2009-06-16}
+  s.date = %q{2009-06-17}
   s.email = %q{x@nofxx.com}
   s.extra_rdoc_files = [
     "README"
@@ -16,19 +16,9 @@ Gem::Specification.new do |s|
      "README",
      "Rakefile",
      "VERSION",
+     "cucumber.yml",
+     "features/ajax.feature",
      "features/sample.feature",
-     "features/step_definitions/assertions.rb",
-     "features/step_definitions/buttons.rb",
-     "features/step_definitions/checkboxes.rb",
-     "features/step_definitions/javascript.rb",
-     "features/step_definitions/links.rb",
-     "features/step_definitions/pages.rb",
-     "features/step_definitions/radio_buttons.rb",
-     "features/step_definitions/select_lists.rb",
-     "features/step_definitions/sleep.rb",
-     "features/step_definitions/spans.rb",
-     "features/step_definitions/text_fields.rb",
-     "features/step_definitions/urls.rb",
      "features/support/env.rb",
      "features/support/paths.rb",
      "lib/watircuke.rb",

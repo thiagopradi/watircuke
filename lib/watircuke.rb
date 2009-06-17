@@ -4,7 +4,7 @@
 # Commonly used watir steps
 #
 #
-require "cucumber"
+require 'cucumber'
 require 'spec'
 
 #
@@ -49,8 +49,8 @@ When /^I (visit|go to) the (.+)$/ do |_, text|
   @browser.goto(@environment + text)
 end
 
-When /^I follow "([^\"]*)"$/ do |l|
-  @browser.link(:text, l).click
+When /^I (click|follow) "([^\"]*)"$/ do |_, id|
+  link = @browser.link(:text, id).click rescue @browser.link(:id, id).click
 end
 
 Then /^I should be on (.+)$/ do |page_name|
@@ -62,19 +62,19 @@ end
 #
 #
 Then /^I should see "([^\"]*)"$/ do |text|
-  @browser.should contains_text(text)
+  @browser.contains_text(text).should be_true
 end
 
 Then /^I should not see "([^\"]*)"$/ do |text|
-  @browser.should_not contains_text(text)
+  @browser.contains_text(text).should be_false
 end
 
-Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
-  res = @browser.body
-  (count.to_i - 1).times { res.sub!(/#{text}/, "")}
-  res.should contain(text)
-  res.sub(/#{text}/, "").should_not contain(text)
-end
+# Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
+#   res = @browser.body
+#   (count.to_i - 1).times { res.sub!(/#{text}/, "")}
+#   res.should contain(text)
+#   res.sub(/#{text}/, "").should_not contain(text)
+# end
 
 Given /I verify the page contains a div class "(.*)"/ do |byclass|
   @browser.div(:class, byclass).exists?.should be_true
@@ -135,6 +135,13 @@ Given /I click the "(.*)" span/  do |text|
   @browser.span(:text, text).click
 end
 
-Given /I wait "(.*)" seconds/ do |time|
+Given /I wait (\d+) seconds*/ do |time|
   sleep time.to_i
+end
+
+Given /^I wait until "([^\"]*)"$/ do |div|
+  7.times do |i|
+    break if @browser.div(:id, div).exists?
+    i == 7 ? raise(Watir::Exception::UnknownObjectException) : sleep(1)
+  end
 end

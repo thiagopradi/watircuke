@@ -1,4 +1,4 @@
-= Watircuke 
+= Watircuke
 
 
 == INSTALL
@@ -14,12 +14,12 @@ Once installed just run "cucumber features" in Safari, Firefox, Watir (see featu
 
 == Rails
 
-Supposing your webrat features are on features/plain, Watir on features/watir and 
-you remove step_definitions/webrat_steps.rb (don't worry, steps will be included), 
+Supposing your webrat features are on features/plain, Watir on features/watir and
+you remove step_definitions/webrat_steps.rb (don't worry, steps will be included),
 you can run `cucumber` for plain webrat and `cucumber -p watir` for some Watir =D
 
 cucumber.yml
-    
+
     default: -r features/support/env.rb -r features/support/webrat.rb -r features/step_definitions features/plain
     watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions features/watir
 
@@ -56,9 +56,7 @@ support/env.rb
     require 'cucumber/formatter/unicode' # Comment out this line if you don't want Cucumber Unicode support
     Cucumber::Rails.use_transactional_fixtures
     Cucumber::Rails.bypass_rescue # Comment out this line if you want Rails own error handling
-        
-== TODO
 
-Rewrite the watir steps to resemble webrat's ones.
+== ABOUT
 
-**cukewatir maximizes the Gherkin speak and minimizes the Watir code.    
+**cukewatir maximizes the Gherkin speak and minimizes the Watir code.

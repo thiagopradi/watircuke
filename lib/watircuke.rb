@@ -1,7 +1,11 @@
+#
+# Watircuke
+#
+# Commonly used watir steps
+#
+#
 require "cucumber"
 require 'spec'
-#require File.join(File.dirname(__FILE__), '..', 'features', 'support', 'env')
-# Dir[File.join(File.dirname(__FILE__), '..', 'features', 'step_definitions', '*rb')].each { |file| require file }
 
 #
 # Environment
@@ -37,24 +41,25 @@ end
 #
 # Browsing
 #
-When /^I follow "([^\"]*)"$/ do |l|
-  @browser.link(:text, l).click
+Given /^I am on (.+)$/ do |page_name|
+  @browser.goto(path_to(page_name))
 end
 
 When /^I (visit|go to) the (.+)$/ do |_, text|
   @browser.goto(@environment + text)
 end
 
-Given /^I am on (.+)$/ do |page_name|
-  @browser.goto(path_to(page_name))
+When /^I follow "([^\"]*)"$/ do |l|
+  @browser.link(:text, l).click
 end
 
-# Then /^I should be on (.+)$/ do |page_name|
-#   URI.parse(current_url).path.should == path_to(page_name)
-# end
+Then /^I should be on (.+)$/ do |page_name|
+  URI.parse(@browser.url).path.should == path_to(page_name)
+end
 
 #
 # Should see
+#
 #
 Then /^I should see "([^\"]*)"$/ do |text|
   @browser.should contains_text(text)
@@ -87,8 +92,13 @@ Given /I verify the page contains the image "(.*)"/ do |image|
   @browser.image(:src, image).exists?.should be_true
 end
 
+Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
+  @browser.checkbox(label).should be_checked
+end
+
 #
 # Forms
+#
 #
 When /^I press "([^\"]*)"$/ do |b|
   @browser.button(:value, b).click
@@ -110,14 +120,8 @@ When /^I check "([^\"]*)"$/ do |id|
   @browser.checkbox(:id, id).click
 end
 
-# When /^I uncheck "([^\"]*)"$/ do |field|
-#   uncheck(field)
-# end
-# Given /I click the "(.*)" checkbox/ do |id|
-# end
-
-Given /I wait "(.*)" seconds/ do |time|
-  sleep time.to_i
+When /^I uncheck "([^\"]*)"$/ do |id|
+  @browser.checkbox(field).clear
 end
 
 #
@@ -129,4 +133,8 @@ end
 
 Given /I click the "(.*)" span/  do |text|
   @browser.span(:text, text).click
+end
+
+Given /I wait "(.*)" seconds/ do |time|
+  sleep time.to_i
 end

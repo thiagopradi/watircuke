@@ -1,8 +1,14 @@
-# require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
-
+#
+# Watircuke
+#
 # Commonly used webrat steps
 # http://github.com/brynary/webrat
+#
 
+#
+# Browsing
+#
+#
 Given /^I am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end
@@ -11,12 +17,80 @@ When /^I go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
-When /^I press "([^\"]*)"$/ do |button|
-  click_button(button)
-end
-
 When /^I follow "([^\"]*)"$/ do |link|
   click_link(link)
+end
+
+Then /^I should be on (.+)$/ do |page_name|
+  URI.parse(current_url).path.should == path_to(page_name)
+end
+
+#
+# Should see
+#
+#
+Then /^I should see "([^\"]*)"$/ do |text|
+  response.should contain(text)
+end
+
+Then /^I should not see "([^\"]*)"$/ do |text|
+  response.should_not contain(text)
+end
+
+Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
+  res = response.body
+  (count.to_i - 1).times { res.sub!(/#{text}/, "")}
+  res.should contain(text)
+  res.sub(/#{text}/, "").should_not contain(text)
+end
+
+Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
+  field_labeled(field).value.should =~ /#{value}/
+end
+
+Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
+  field_labeled(field).value.should_not =~ /#{value}/
+end
+
+Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
+  field_labeled(label).should be_checked
+end
+
+Then /^I should see a (\S+) in the (\S+)$/ do |element, containing_element|
+  response.should have_tag("##{containing_element} .#{element}")
+end
+
+Then /^I should see the (\S+) in the (\S+)$/ do |element, containing_element|
+  response.should have_tag("##{containing_element} ##{element}")
+end
+
+Then /^I should see (\d+) (\S+) in the (\S+)$/ do |count, element, containing_element|
+  response.should have_tag("##{containing_element} .#{element.singularize}",:count => count.to_i)
+end
+
+Then /^I should see (\d+) to (\d+) (\S+) in the (\S+)$/ do |min, max, element, containing_element|
+  response.should have_tag("##{containing_element} .#{element.singularize}",min.to_i..max.to_i)
+end
+
+Then /^the (\S+) in the (\S+) should contain (a|an|the) (\S+)$/ do |middle_element, outer_element, a, inner_element|
+  response.should have_tag("##{outer_element} .#{middle_element} .#{inner_element}")
+end
+
+Then /^I should see the (\S+)$/ do |element_id|
+  response.should have_tag("##{element_id}")
+end
+
+Then /^I should see (a|an) (\S+)$/ do |a, element_class|
+  response.should have_tag(".#{element_class}")
+end
+
+
+#
+# Forms
+#
+#
+When /^I press "([^\"]*)"$/ do |button|
+  click_button(button)
 end
 
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
@@ -88,6 +162,10 @@ When /^I select "([^\"]*)" as the "([^\"]*)" date$/ do |date, date_label|
   select_date(date, :from => date_label)
 end
 
+When /^I choose "([^\"]*)"$/ do |field|
+  choose(field)
+end
+
 When /^I check "([^\"]*)"$/ do |field|
   check(field)
 end
@@ -96,45 +174,10 @@ When /^I uncheck "([^\"]*)"$/ do |field|
   uncheck(field)
 end
 
-When /^I choose "([^\"]*)"$/ do |field|
-  choose(field)
-end
-
 When /^I attach the file at "([^\"]*)" to "([^\"]*)"$/ do |path, field|
   attach_file(field, path)
 end
 
-Then /^I should see "([^\"]*)"$/ do |text|
-  response.should contain(text)
-end
-
-Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
-  res = response.body
-  (count.to_i - 1).times { res.sub!(/#{text}/, "")}
-  res.should contain(text)
-  res.sub(/#{text}/, "").should_not contain(text)
-end
-
-
-Then /^I should not see "([^\"]*)"$/ do |text|
-  response.should_not contain(text)
-end
-
-Then /^the "([^\"]*)" field should contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should =~ /#{value}/
-end
-
-Then /^the "([^\"]*)" field should not contain "([^\"]*)"$/ do |field, value|
-  field_labeled(field).value.should_not =~ /#{value}/
-end
-
-Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
-  field_labeled(label).should be_checked
-end
-
-Then /^I should be on (.+)$/ do |page_name|
-  URI.parse(current_url).path.should == path_to(page_name)
-end
 
 # Steps that are generally useful and help encourage use of semantic
 # IDs and Class Names in your markup. In the steps below, a match following
@@ -152,30 +195,3 @@ Then /^I wait for ([0-9]+) seconds$/ do |delay|
   sleep delay.to_i
 end
 
-Then /^I should see a (\S+) in the (\S+)$/ do |element, containing_element|
-  response.should have_tag("##{containing_element} .#{element}")
-end
-
-Then /^I should see the (\S+) in the (\S+)$/ do |element, containing_element|
-  response.should have_tag("##{containing_element} ##{element}")
-end
-
-Then /^I should see (\d+) (\S+) in the (\S+)$/ do |count, element, containing_element|
-  response.should have_tag("##{containing_element} .#{element.singularize}",:count => count.to_i)
-end
-
-Then /^I should see (\d+) to (\d+) (\S+) in the (\S+)$/ do |min, max, element, containing_element|
-  response.should have_tag("##{containing_element} .#{element.singularize}",min.to_i..max.to_i)
-end
-
-Then /^the (\S+) in the (\S+) should contain (a|an|the) (\S+)$/ do |middle_element, outer_element, a, inner_element|
-  response.should have_tag("##{outer_element} .#{middle_element} .#{inner_element}")
-end
-
-Then /^I should see the (\S+)$/ do |element_id|
-  response.should have_tag("##{element_id}")
-end
-
-Then /^I should see (a|an) (\S+)$/ do |a, element_class|
-  response.should have_tag(".#{element_class}")
-end

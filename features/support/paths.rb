@@ -10,6 +10,8 @@ module NavigationHelpers
       @environment + "aslakhellesoy/cucumber/tree/master"
     when /the homepage/i
       @environment
+    when /bing/i
+      "http://bing.com"
 
     # Add more page name => path mappings here
 

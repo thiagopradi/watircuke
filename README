@@ -1,27 +1,30 @@
 = Watircuke
 
-
-== INSTALL
-
-Cucumber:
-http://wiki.github.com/aslakhellesoy/cucumber/install
-
-Watir ~ Firewatir ~ Safariwatir:
-http://wtr.rubyforge.org/install.html
-
-Once installed just run "cucumber features" in Safari, Firefox, Watir (see features/support/env.rb)
+Webrat & Watir Family common (and some cool) steps as a gem.
 
 
-== Rails
+== Install
 
-Supposing your webrat features are on features/plain, Watir on features/watir and
-you remove step_definitions/webrat_steps.rb (don't worry, steps will be included),
-you can run `cucumber` for plain webrat and `cucumber -p watir` for some Watir =D
+Cucumber::   http://wiki.github.com/aslakhellesoy/cucumber/install
+Watir ~ Firewatir ~ Safariwatir::  http://wtr.rubyforge.org/install.html
+
+
+== Use
+
+* Remove step_definitions/webrat_steps.rb if you have it.
+
+* In the scenarios you want to run watir, just add the @watir tag before.
+
+* Run `cucumber` for webrat and `cucumber -p watir` for some Watir =D
+
+
+== Rails Sample
+
 
 cucumber.yml
 
-    default: -r features/support/env.rb -r features/support/webrat.rb -r features/step_definitions features/plain
-    watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions features/watir
+    default: -r features/support/env.rb -r features/support/webrat.rb -r features/step_definitions
+    watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions -t watir
 
 
 support/watir.rb

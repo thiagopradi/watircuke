@@ -1,0 +1,2 @@
+default: CUC_ENV=watir -r features/support/env.rb features -t ~webrat
+webrat: CUC_ENV=webrat -r features/support/env.rb features -t webrat

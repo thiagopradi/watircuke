@@ -1,39 +1,19 @@
-require 'test/unit/assertions'
-include Test::Unit::Assertions
 require 'spec'
 
-if ENV['FIREWATIR']
-  require 'firewatir'
-  Browser = FireWatir::Firefox
+if ENV['CUC_ENV'] == 'webrat'
+  require 'webrat/core/matchers'
+  require File.expand_path(File.dirname(__FILE__) + '/../../lib/webratcuke')
 else
-  case RUBY_PLATFORM
-  when /darwin/
-    require 'firewatir'
-    Browser = FireWatir::Firefox
-    # require 'safariwatir'    
-    # Browser = Watir::Safari
-  when /win32|mingw/
-    require 'watir'
-    Browser = Watir::IE
-  when /java/
-    require 'celerity'
-    Browser = Celerity::Browser
-  else
-    raise "This platform is not supported (#{PLATFORM})"
+  require File.expand_path(File.dirname(__FILE__) + '/../../lib/watircuke')
+
+  Before do
+    @environment = "http://github.com/"
+    #  sleep 1
   end
+
+  # "after all"
+  at_exit do
+    @browser.close if @browser
+  end
+
 end
- 
-
- # "before all"
- browser = Browser.new
-
- Before do
-   @browser = browser
-   @environment = "http://github.com/"
-   sleep 3
- end
-
- # "after all"
- at_exit do
-   # @browser.close
- end

@@ -1,0 +1,66 @@
+= Watircuke
+
+Webrat & Watir Family common (and some cool) steps as a gem.
+
+
+== Install
+
+Cucumber::   http://wiki.github.com/aslakhellesoy/cucumber/install
+Watir ~ Firewatir ~ Safariwatir::  http://wtr.rubyforge.org/install.html
+
+
+== Use
+
+* Remove step_definitions/webrat_steps.rb if you have it.
+
+* In the scenarios you want to run watir, just add the @watir tag before.
+
+* Run `cucumber` for webrat and `cucumber -p watir` for some Watir =D
+
+
+== Rails Sample
+
+
+cucumber.yml
+
+    default: -r features/support/env.rb -r features/support/webrat.rb -r features/step_definitions
+    watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions -t watir
+
+
+support/watir.rb
+
+    require 'watircuke'
+    Before do
+      @environment = "http://localhost:3000/
+      sleep 1
+    end
+    # optional
+    # at_exit do
+    #   @browser.close
+    # end
+
+
+support/webrat.rb
+
+    require 'webrat'
+    Webrat.configure do |config|
+      config.mode = :rails
+    end
+    require 'cucumber/rails/rspec'
+    require 'webrat/core/matchers'
+    require 'webratcuke'
+
+
+support/env.rb
+
+    ENV["RAILS_ENV"] ||= "cucumber"
+    require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
+    require 'cucumber/rails/world'
+    require 'cucumber/formatter/unicode' # Comment out this line if you don't want Cucumber Unicode support
+    Cucumber::Rails.use_transactional_fixtures
+    Cucumber::Rails.bypass_rescue # Comment out this line if you want Rails own error handling
+
+
+== ABOUT
+
+**cukewatir maximizes the Gherkin speak and minimizes the Watir code.

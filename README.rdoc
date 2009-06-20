@@ -27,30 +27,6 @@ cucumber.yml
     watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions -t watir
 
 
-support/watir.rb
-
-    require 'watircuke'
-    Before do
-      @environment = "http://localhost:3000/
-      sleep 1
-    end
-    # optional
-    # at_exit do
-    #   @browser.close
-    # end
-
-
-support/webrat.rb
-
-    require 'webrat'
-    Webrat.configure do |config|
-      config.mode = :rails
-    end
-    require 'cucumber/rails/rspec'
-    require 'webrat/core/matchers'
-    require 'webratcuke'
-
-
 support/env.rb
 
     ENV["RAILS_ENV"] ||= "cucumber"
@@ -59,6 +35,26 @@ support/env.rb
     require 'cucumber/formatter/unicode' # Comment out this line if you don't want Cucumber Unicode support
     Cucumber::Rails.use_transactional_fixtures
     Cucumber::Rails.bypass_rescue # Comment out this line if you want Rails own error handling
+
+    if ENV['CUC_ENV'] == 'watir'
+      require 'watircuke'
+      Before do
+        @environment = "http://localhost:3000/
+        sleep 1
+      end
+      # optional
+      # at_exit do
+      #   @browser.close
+      # end
+    else
+      require 'webrat'
+      Webrat.configure do |config|
+        config.mode = :rails
+      end
+      require 'cucumber/rails/rspec'
+      require 'webrat/core/matchers'
+      require 'webratcuke'
+    end
 
 
 == ABOUT

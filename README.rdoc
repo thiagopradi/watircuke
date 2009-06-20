@@ -23,8 +23,8 @@ Watir ~ Firewatir ~ Safariwatir::  http://wtr.rubyforge.org/install.html
 
 cucumber.yml
 
-    default: -r features/support/env.rb -r features/support/webrat.rb -r features/step_definitions
-    watir:   -r features/support/env.rb -r features/support/watir.rb -r features/step_definitions -t watir
+    default: CUC_ENV=webrat -r features/support/env.rb features -t ~watir
+    watir: CUC_ENV=watir  -r features/support/env.rb features -t  watir
 
 
 support/env.rb

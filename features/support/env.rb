@@ -1,4 +1,5 @@
 require 'spec'
+require File.expand_path(File.dirname(__FILE__) + '/paths')
 
 if ENV['CUC_ENV'] == 'webrat'
   require 'webrat/core/matchers'
@@ -11,9 +12,9 @@ else
     #  sleep 1
   end
 
-  # "after all"
-  at_exit do
-    @browser.close if @browser
-  end
+  # FIXME: this doesn't work
+  # After do
+  #   @browser.close if @browser
+  # end
 
 end

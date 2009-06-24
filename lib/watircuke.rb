@@ -105,7 +105,7 @@ When /^I press "([^\"]*)"$/ do |b|
 end
 
 When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
-  @browser.text_field(:name, field).set(value)
+  @browser.text_field(:name, field).set(value) rescue @browser.text_field(:id, field).set(value)
 end
 
 When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, id|

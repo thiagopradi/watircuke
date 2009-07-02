@@ -1,4 +1,3 @@
-#
 # Watircuke
 #
 # Commonly used webrat steps

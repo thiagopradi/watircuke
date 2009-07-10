@@ -1,13 +1,4 @@
-# Watircuke
-#
-# Commonly used webrat steps
-# http://github.com/brynary/webrat
-#
 
-#
-# Browsing
-#
-#
 Given /^I am on (.+)$/ do |page_name|
   visit path_to(page_name)
 end

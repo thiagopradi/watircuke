@@ -1,114 +1,109 @@
-module Watircuke
-  module Steps
-    module EN
-      #
-      # Browsing
-      #
-      Given /^I am on (.+)$/ do |page_name|
-        @browser.goto(path_to(page_name))
-      end
 
-      When /^I (visit|go to) the (.+)$/ do |_, text|
-        @browser.goto(@environment + text)
-      end
+#
+# Browsing
+#
+Given /^I am on (.+)$/ do |page_name|
+  @browser.goto(path_to(page_name))
+end
 
-      When /^I (click|follow) "([^\"]*)"$/ do |_, id|
-        link = @browser.link(:text, id).click rescue @browser.link(:id, id).click
-      end
+When /^I (visit|go to) the (.+)$/ do |_, text|
+  @browser.goto(@environment + text)
+end
 
-      Then /^I should be on (.+)$/ do |page_name|
-        URI.parse(@browser.url).path.should == path_to(page_name)
-      end
+When /^I (click|follow) "([^\"]*)"$/ do |_, id|
+  link = @browser.link(:text, id).click rescue @browser.link(:id, id).click
+end
 
-      #
-      # Should see
-      #
-      #
-      Then /^I should see "([^\"]*)"$/ do |text|
-        @browser.contains_text(text).should be_true
-      end
+Then /^I should be on (.+)$/ do |page_name|
+  URI.parse(@browser.url).path.should == path_to(page_name)
+end
 
-      Then /^I should not see "([^\"]*)"$/ do |text|
-        @browser.contains_text(text).should be_false
-      end
+#
+# Should see
+#
+#
+Then /^I should see "([^\"]*)"$/ do |text|
+  @browser.contains_text(text).should be_true
+end
 
-      # Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
-      #   res = @browser.body
-      #   (count.to_i - 1).times { res.sub!(/#{text}/, "")}
-      #   res.should contain(text)
-      #   res.sub(/#{text}/, "").should_not contain(text)
-      # end
+Then /^I should not see "([^\"]*)"$/ do |text|
+  @browser.contains_text(text).should be_false
+end
 
-      Given /I verify the page contains a div class "(.*)"/ do |byclass|
-        @browser.div(:class, byclass).exists?.should be_true
-      end
+# Then /^I should see "([^\"]*)" (\d+) times*$/ do |text, count|
+#   res = @browser.body
+#   (count.to_i - 1).times { res.sub!(/#{text}/, "")}
+#   res.should contain(text)
+#   res.sub(/#{text}/, "").should_not contain(text)
+# end
 
-      Given /I verify the page contains a div id "(.*)"/ do |id|
-        @browser.div(:id, id).exists?.should be_true
-      end
+Given /I verify the page contains a div class "(.*)"/ do |byclass|
+  @browser.div(:class, byclass).exists?.should be_true
+end
 
-      Given /I verify the page contains a link class "(.*)"/ do |byclass|
-        @browser.link(:class, byclass).exists?.should be_true
-      end
+Given /I verify the page contains a div id "(.*)"/ do |id|
+  @browser.div(:id, id).exists?.should be_true
+end
 
-      Given /I verify the page contains the image "(.*)"/ do |image|
-        @browser.image(:src, image).exists?.should be_true
-      end
+Given /I verify the page contains a link class "(.*)"/ do |byclass|
+  @browser.link(:class, byclass).exists?.should be_true
+end
 
-      Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
-        @browser.checkbox(label).should be_checked
-      end
+Given /I verify the page contains the image "(.*)"/ do |image|
+  @browser.image(:src, image).exists?.should be_true
+end
 
-      #
-      # Forms
-      #
-      #
-      When /^I press "([^\"]*)"$/ do |b|
-        @browser.button(:value, b).click
-      end
+Then /^the "([^\"]*)" checkbox should be checked$/ do |label|
+  @browser.checkbox(label).should be_checked
+end
 
-      When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
-        @browser.text_field(:name, field).set(value) rescue @browser.text_field(:id, field).set(value)
-      end
+#
+# Forms
+#
+#
+When /^I press "([^\"]*)"$/ do |b|
+  @browser.button(:value, b).click
+end
 
-      When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, id|
-        @browser.select_list(:id, id).select(value)
-      end
+When /^I fill in "([^\"]*)" with "([^\"]*)"$/ do |field, value|
+  @browser.text_field(:name, field).set(value) rescue @browser.text_field(:id, field).set(value)
+end
 
-      When /^I choose "([^\"]*)"$/ do |id|
-        @browser.radio(:id, id).click
-      end
+When /^I select "([^\"]*)" from "([^\"]*)"$/ do |value, id|
+  @browser.select_list(:id, id).select(value)
+end
 
-      When /^I check "([^\"]*)"$/ do |id|
-        @browser.checkbox(:id, id).click
-      end
+When /^I choose "([^\"]*)"$/ do |id|
+  @browser.radio(:id, id).click
+end
 
-      When /^I uncheck "([^\"]*)"$/ do |id|
-        @browser.checkbox(field).clear
-      end
+When /^I check "([^\"]*)"$/ do |id|
+  @browser.checkbox(:id, id).click
+end
 
-      #
-      # Javascript
-      #
-      Given /From the "(.*)" link I fire the "(.*)" event/  do |text, event|
-        @browser.link(:text , text).fire_event(event)
-      end
+When /^I uncheck "([^\"]*)"$/ do |id|
+  @browser.checkbox(field).clear
+end
 
-      Given /I click the "(.*)" span/  do |text|
-        @browser.span(:text, text).click
-      end
+#
+# Javascript
+#
+Given /From the "(.*)" link I fire the "(.*)" event/  do |text, event|
+  @browser.link(:text , text).fire_event(event)
+end
 
-      Given /I wait (\d+) seconds*/ do |time|
-        sleep time.to_i
-      end
+Given /I click the "(.*)" span/  do |text|
+  @browser.span(:text, text).click
+end
 
-      Given /^I wait until "([^\"]*)"$/ do |div|
-        7.times do |i|
-          break if @browser.div(:id, div).exists?
-          i == 7 ? raise(Watir::Exception::UnknownObjectException) : sleep(1)
-        end
-      end
+Given /I wait (\d+) seconds*/ do |time|
+  sleep time.to_i
+end
 
-    end
+Given /^I wait until "([^\"]*)"$/ do |div|
+  7.times do |i|
+    break if @browser.div(:id, div).exists?
+    i == 7 ? raise(Watir::Exception::UnknownObjectException) : sleep(1)
   end
 end
+

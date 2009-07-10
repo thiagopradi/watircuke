@@ -38,8 +38,3 @@ end
 Before do
   @browser = Browser.new
 end
-
-#Steps
-require "steps/watircuke_en.rb"
-require "steps/watircuke_pt.rb"
-require "steps/webratcuke_en.rb"

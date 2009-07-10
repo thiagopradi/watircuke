@@ -15,11 +15,12 @@ if ENV['FIREWATIR']
   Browser = FireWatir::Firefox
 else
   case RUBY_PLATFORM
-  when /darwin|linux/
+  when /darwin/
     require 'firewatir'
     Browser = FireWatir::Firefox
-    # require 'safariwatir'
-    # Browser = Watir::Safari
+  when /linux/
+    require 'safariwatir'
+    Browser = Watir::Safari
   when /win32|mingw/
     require 'watir'
     Browser = Watir::IE
